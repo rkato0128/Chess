@@ -7,6 +7,8 @@ public class BoardManager : MonoBehaviour
 
     [HideInInspector] public Vector3[,] board = new Vector3[6,6];
 
+    //public BoardTile[,] board = new BoardTile[6,6];
+
     [SerializeField] private GameObject tileWhite;
     [SerializeField] private GameObject tileBlack;
     [SerializeField] private float tileSize = 1;
