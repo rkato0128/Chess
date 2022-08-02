@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    //[HideInInspector] public Vector3[,] board = new Vector3[6,6];
 
-    [HideInInspector] public Vector3[,] board = new Vector3[6,6];
+    public BoardTile[,] board = new BoardTile[6,6];
 
-    //public BoardTile[,] board = new BoardTile[6,6];
+    public GameObject[] chessPieces;
 
-    [SerializeField] private GameObject tileWhite;
-    [SerializeField] private GameObject tileBlack;
+    [Space]
+
+    [SerializeField] private GameObject boardTile;
+    // [SerializeField] private GameObject tileWhite;
+    // [SerializeField] private GameObject tileBlack;
     [SerializeField] private float tileSize = 1;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,28 +32,62 @@ public class BoardManager : MonoBehaviour
         {
             for(int j = 0; j < 6; j++)
             {
-                board[j ,i] = new Vector3(tileSize * j, 0, tileSize * i);
+                //board[j ,i] = new Vector3(tileSize * j, 0, tileSize * i);
                 
                 GameObject tile;
+                tile = Instantiate(boardTile, new Vector3(tileSize * j, 0, tileSize * i), Quaternion.identity);
+                tile.GetComponent<BoardTile>().SetTileColor(isBlack);
 
-                if(isBlack)
-                {
-                    tile = Instantiate(tileBlack, board[j,i], Quaternion.identity);
-                    isBlack = false;
-                }
-                else
-                {
-                    tile = Instantiate(tileWhite, board[j,i], Quaternion.identity);
-                    isBlack = true;
-                }
+                isBlack = isBlack ? false : true;
+
+                // if(isBlack)
+                // {
+                //     tile = Instantiate(tileBlack, board[j,i], Quaternion.identity);
+                //     isBlack = false;
+                // }
+                // else
+                // {
+                //     tile = Instantiate(boardTile, board[j,i], Quaternion.identity);
+                //     isBlack = true;
+                // }
 
                 tile.name = (char) (65 + j) + (i + 1).ToString();
                 tile.transform.SetParent(this.gameObject.transform);
+                
+                board[j ,i] = tile.GetComponent<BoardTile>();
 
                 //Debug.Log("is " + tile.name + " black? - " + isBlack);
             }
 
             isBlack = isBlack ? false : true;
         }
+    }
+
+    void CheckMoveablePath(ChessPiece piece) // Pawn
+    {
+        int pieceRow;
+        int pieceColumn;
+
+        List<BoardTile> moveablePath = new List<BoardTile>();
+
+        pieceRow = 0; // test value
+        pieceColumn = 0; // test value
+
+        int MoveableTileCount = 2;
+
+        for(int i = pieceColumn + 1; i < pieceColumn + 1 + MoveableTileCount; i++)
+        {
+            bool isUnitOnTile = board[pieceRow, i].isUnitOnTile();
+
+            if(!isUnitOnTile)
+            {
+                moveablePath.Add(board[pieceRow, i]);
+            }
+        }
+    }
+
+    void MovePiece()
+    {
+
     }
 }
