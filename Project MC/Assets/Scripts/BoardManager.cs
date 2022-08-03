@@ -22,6 +22,11 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         GenerateBoard();
+
+        foreach(GameObject pieceObject in chessPieces)
+        {
+            pieceObject.GetComponent<ChessPiece>().currentTile = board[0,0]; // for test
+        }
     }
 
     void GenerateBoard()

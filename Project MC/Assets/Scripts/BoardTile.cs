@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoardTile : MonoBehaviour
 {
-    public ChessPiece chessUnit;
+    public ChessPiece chessPiece;
 
     [Space]
 
@@ -19,6 +19,6 @@ public class BoardTile : MonoBehaviour
     
     public bool isUnitOnTile()
     {
-        return chessUnit ? true : false;
+        return chessPiece ? true : false;
     }
 }

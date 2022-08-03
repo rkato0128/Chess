@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class ChessPiece : MonoBehaviour
 {
-    public ChessPiece(int unitType)
+    public ChessPiece(Constants.UnitType unitType)
     {
 
     }
     
-    public void Move()
+    public BoardTile currentTile;
+    
+    public void Move(BoardTile targetTile)
     {
-        this.gameObject.transform.localPosition = new Vector3();
+        currentTile.chessPiece = null; // 멤버 변수 초기화 어떻게?
+        System.GC.Collect();
+
+        targetTile.chessPiece = this;
+        this.gameObject.transform.localPosition = new Vector3(targetTile.transform.localPosition.x, 2, targetTile.transform.localPosition.z);
     }
 }

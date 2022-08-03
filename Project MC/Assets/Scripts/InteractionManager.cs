@@ -17,7 +17,7 @@ public class InteractionManager : MonoBehaviour
 
     private void Start()
     {
-
+        currentTurnState = TurnState.PIECESELECT;
     }
 
     private void Update()
@@ -29,17 +29,40 @@ public class InteractionManager : MonoBehaviour
 
             if(Physics.Raycast(ray, out hit))
             {
-                Debug.Log(hit.transform.gameObject.name);
-
-                switch(currentTurnState)
-                {
-                    case(TurnState.PIECESELECT):
-                        break;
-
-                    case(TurnState.PATHSELECT):
-                        break;
-                }
+                Debug.Log("Raycast Hit : " + hit.transform.gameObject.name);
+                Interaction(hit);
             }
+        }
+    }
+
+    
+    private ChessPiece selectedPiece;
+    private BoardTile selectedTile;
+
+    void Interaction(RaycastHit hit)
+    {
+        switch(currentTurnState)
+        {
+            case(TurnState.PIECESELECT):
+                if(hit.transform.gameObject.GetComponent<ChessPiece>()) // Chess Piece Click - GetComponent<>() bool 타입 반환?
+                {
+                    selectedPiece = hit.transform.gameObject.GetComponent<ChessPiece>();
+                    currentTurnState = TurnState.PATHSELECT;
+                    
+                    Debug.Log("Chess Piece Selected");
+                }
+                break;
+
+            case(TurnState.PATHSELECT):
+                if(hit.transform.gameObject.GetComponent<BoardTile>()) // Tile Click
+                {
+                    selectedTile = hit.transform.gameObject.GetComponent<BoardTile>();
+                    selectedPiece.Move(selectedTile);
+                    currentTurnState = TurnState.PIECESELECT;
+                    
+                    Debug.Log("Piece Moved to Tile " + selectedTile.gameObject.name);
+                }
+                break;
         }
     }
 }
