@@ -5,11 +5,11 @@ public static class Constants
 {
     public enum UnitType
     {
-        Pawn,
-        Rook,
-        Knight,
-        Bishop,
-        Queen,
-        King
+        PAWN,
+        ROOK,
+        KNIGHT,
+        BISHOP,
+        QUEEN,
+        KING
     }
 }
