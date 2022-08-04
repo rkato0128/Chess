@@ -13,16 +13,14 @@ public class BoardManager : MonoBehaviour
     [Space]
 
     [SerializeField] private GameObject boardTile;
-    // [SerializeField] private GameObject tileWhite;
-    // [SerializeField] private GameObject tileBlack;
     [SerializeField] private float tileSize = 1;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         GenerateBoard();
 
+        // 배치 데이터 넘겨받아서 보드에 배치
         foreach(GameObject pieceObject in chessPieces)
         {
             pieceObject.GetComponent<ChessPiece>().currentTile = board[0,0]; // for test
@@ -37,24 +35,11 @@ public class BoardManager : MonoBehaviour
         {
             for(int j = 0; j < 6; j++)
             {
-                //board[j ,i] = new Vector3(tileSize * j, 0, tileSize * i);
-                
                 GameObject tile;
                 tile = Instantiate(boardTile, new Vector3(tileSize * j, 0, tileSize * i), Quaternion.identity);
                 tile.GetComponent<BoardTile>().SetTileColor(isBlack);
 
                 isBlack = isBlack ? false : true;
-
-                // if(isBlack)
-                // {
-                //     tile = Instantiate(tileBlack, board[j,i], Quaternion.identity);
-                //     isBlack = false;
-                // }
-                // else
-                // {
-                //     tile = Instantiate(boardTile, board[j,i], Quaternion.identity);
-                //     isBlack = true;
-                // }
 
                 tile.name = (char) (65 + j) + (i + 1).ToString();
                 tile.transform.SetParent(this.gameObject.transform);
@@ -82,7 +67,7 @@ public class BoardManager : MonoBehaviour
 
         for(int i = pieceColumn + 1; i < pieceColumn + 1 + MoveableTileCount; i++)
         {
-            bool isUnitOnTile = board[pieceRow, i].isUnitOnTile();
+            bool isUnitOnTile = board[pieceRow, i].isUnitOnTile;
 
             if(!isUnitOnTile)
             {

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
-    
     public enum TurnState
     {
         PIECESELECT,
@@ -44,9 +43,9 @@ public class InteractionManager : MonoBehaviour
         switch(currentTurnState)
         {
             case(TurnState.PIECESELECT):
-                if(hit.transform.gameObject.GetComponent<ChessPiece>()) // Chess Piece Click - GetComponent<>() bool 타입 반환?
+                if(hit.transform.gameObject.TryGetComponent<ChessPiece>(out ChessPiece chess)) // Chess Piece Click - GetComponent<>() bool 타입 반환?
                 {
-                    selectedPiece = hit.transform.gameObject.GetComponent<ChessPiece>();
+                    selectedPiece = chess;
                     currentTurnState = TurnState.PATHSELECT;
                     
                     Debug.Log("Chess Piece Selected");
