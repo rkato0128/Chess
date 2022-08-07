@@ -12,7 +12,14 @@ public class BoardTile : MonoBehaviour
     [SerializeField] private Color32 tileColWhite;
 
 
-    public bool isUnitOnTile
+    // Column : Vertical (A,B,C...) / Row : Horizontal (1,2,3...)
+    [SerializeField] private int _column;
+    [SerializeField] private int _row;
+
+    public int column{get{return _column;}}
+    public int row{get{return _row;}}
+    
+    public bool isPieceOnTile
     {
         get
         {
@@ -20,14 +27,29 @@ public class BoardTile : MonoBehaviour
         }
     }
 
+
     public void Moveable()
     {
-        // 이동 가능 타일 연출 출력
+        // for moveable notice test
+        tempColor = tileMesh.material.color;
+        tileMesh.material.color = Color.red;
     }
 
-    // Board Initial Setting
-    public void SetTileColor(bool isBlack)
+    // for moveable notice test
+    private Color32 tempColor;
+
+    public void SetTileOriginColor()
     {
+        tileMesh.material.color = tempColor;
+    }
+
+
+    // Board Initial Setting
+    public void SetTile(int tileColumn, int tileRow, bool isBlack)
+    {
+        _column = tileColumn;
+        _row = tileRow;
+
         tileMesh.material.color = isBlack ? tileColBlack : tileColWhite;
     }
 }

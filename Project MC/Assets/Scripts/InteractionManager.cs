@@ -43,12 +43,15 @@ public class InteractionManager : MonoBehaviour
         switch(currentTurnState)
         {
             case(TurnState.PIECESELECT):
-                if(hit.transform.gameObject.TryGetComponent<ChessPiece>(out ChessPiece chess)) // Chess Piece Click - GetComponent<>() bool 타입 반환?
+                if(hit.transform.gameObject.TryGetComponent<ChessPiece>(out ChessPiece piece)) // Chess Piece Click - GetComponent<>() bool 타입 반환?
                 {
-                    selectedPiece = chess;
+                    selectedPiece = piece;
                     currentTurnState = TurnState.PATHSELECT;
+                    boardManager.CheckPiecePath(selectedPiece);
                     
                     Debug.Log("Chess Piece Selected");
+
+                    //Debug.Log("is Piece Same in Array" + selectedPiece.Equals(boardManager.chessPieces[0])); // 값이 다름? - 식별 인덱스 추가
                 }
                 break;
 
@@ -58,7 +61,13 @@ public class InteractionManager : MonoBehaviour
                     selectedTile = hit.transform.gameObject.GetComponent<BoardTile>();
                     selectedPiece.Move(selectedTile);
                     currentTurnState = TurnState.PIECESELECT;
-                    
+
+                    // For test
+                    foreach(BoardTile temp in boardManager.moveableArea)
+                    {
+                        temp.SetTileOriginColor(); 
+                    }
+
                     Debug.Log("Piece Moved to Tile " + selectedTile.gameObject.name);
                 }
                 break;

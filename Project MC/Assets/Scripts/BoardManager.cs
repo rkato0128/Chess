@@ -23,7 +23,7 @@ public class BoardManager : MonoBehaviour
         // 배치 데이터 넘겨받아서 보드에 배치
         foreach(GameObject pieceObject in chessPieces)
         {
-            pieceObject.GetComponent<ChessPiece>().currentTile = board[0,0]; // for test
+            pieceObject.GetComponent<ChessPiece>().Set(Constants.Team.WHITE, board[0,0]); // for test
         }
     }
 
@@ -31,53 +31,115 @@ public class BoardManager : MonoBehaviour
     {
         bool isBlack = true;
 
-        for(int i = 0; i < 6; i++) // j - Horizontal (A,B,C...) / i = Vertical (1,2,3...)
+        // y : Column (A,B,C...) / x : Row (1,2,3...)
+        for(int y = 0; y < 6; y++)
         {
-            for(int j = 0; j < 6; j++)
+            for(int x = 0; x < 6; x++)
             {
                 GameObject tile;
-                tile = Instantiate(boardTile, new Vector3(tileSize * j, 0, tileSize * i), Quaternion.identity);
-                tile.GetComponent<BoardTile>().SetTileColor(isBlack);
+                tile = Instantiate(boardTile, new Vector3(tileSize * x, 0, tileSize * y), Quaternion.identity);
+
+                board[x ,y] = tile.GetComponent<BoardTile>();
+                board[x ,y].SetTile(x, y, isBlack);
+
+                tile.name = (char) (65 + x) + (y + 1).ToString();
+                tile.transform.SetParent(this.gameObject.transform);
 
                 isBlack = isBlack ? false : true;
-
-                tile.name = (char) (65 + j) + (i + 1).ToString();
-                tile.transform.SetParent(this.gameObject.transform);
-                
-                board[j ,i] = tile.GetComponent<BoardTile>();
-
-                //Debug.Log("is " + tile.name + " black? - " + isBlack);
             }
 
             isBlack = isBlack ? false : true;
         }
     }
 
-    void CheckMoveablePath(ChessPiece piece) // Pawn
+
+    // Checking Space    
+    public List<BoardTile> moveableArea = new List<BoardTile>();
+
+    public void CheckPiecePath(ChessPiece piece)
     {
-        int pieceRow;
-        int pieceColumn;
+        moveableArea.Clear();
 
-        List<BoardTile> moveablePath = new List<BoardTile>();
-
-        pieceRow = 0; // test value
-        pieceColumn = 0; // test value
-
-        int MoveableTileCount = 2;
-
-        for(int i = pieceColumn + 1; i < pieceColumn + 1 + MoveableTileCount; i++)
+        switch (piece.type)
         {
-            bool isUnitOnTile = board[pieceRow, i].isUnitOnTile;
+            case Constants.UnitType.PAWN :
+                CheckPawnPath(piece.currentTile.column, piece.currentTile.row, piece.team);
+                break;
 
-            if(!isUnitOnTile)
-            {
-                moveablePath.Add(board[pieceRow, i]);
-            }
+            case Constants.UnitType.ROOK :
+                break;
+
+            case Constants.UnitType.KNIGHT :
+                break;
+            
+            case Constants.UnitType.BISHOP :
+                break;
+            
+            case Constants.UnitType.QUEEN :
+                break;
+            
+            case Constants.UnitType.KING :
+                break;
+        }
+
+        PrintMoveableArea();
+    }
+
+    private void CheckPawnPath(int pieceColumn, int pieceRow, Constants.Team team, bool isFirstMove = false)
+    {
+        int movingDir = (team == Constants.Team.WHITE) ? 1 : -1;
+
+        if(isFirstMove)
+        {
+            CheckGeneralMove(team, pieceColumn, pieceRow, 0, movingDir, 2);
+        }
+        else
+        {
+            CheckGeneralMove(team, pieceColumn, pieceRow, 0, movingDir);
         }
     }
 
-    void MovePiece()
+    // movingDir 값 -1, 0, 1 로 한정짓고 싶을 때 clamp?
+    private void CheckGeneralMove(Constants.Team team, int pieceColumn, int pieceRow, int movingDirX, int movingDirY, int moveCount = 1)
     {
+        int checkX = pieceColumn;
+        int checkY = pieceRow;
 
+        int count = 1;
+
+        while(true)
+        {
+            if(checkX < 0 || checkX > 5 || checkY < 0 || checkY > 5 || count > moveCount)
+            {
+                break;
+            }
+
+            checkX += 1 * movingDirX;
+            checkY += 1 * movingDirY;
+
+            if(board[checkX, checkY].isPieceOnTile)
+            {
+                if(board[checkX, checkY].pieceOnTile.team != team)
+                {
+                    moveableArea.Add(board[checkX, checkY]);
+                }
+
+                break;
+            }
+            else
+            {
+                moveableArea.Add(board[checkX, checkY]);
+            }
+
+            count++;
+        }
+    }
+
+    private void PrintMoveableArea()
+    {
+        foreach(BoardTile tile in moveableArea)
+        {
+            tile.Moveable();
+        }
     }
 }

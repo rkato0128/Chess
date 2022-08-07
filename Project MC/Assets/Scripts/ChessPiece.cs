@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ChessPiece : MonoBehaviour
 {
-    public Constants.UnitType pieceType;
+    // prefab 단에서 설정
+    [Header("Piece Initial Option")]
+    public Constants.UnitType type;
 
-    // public ChessPiece(Constants.UnitType pieceType)
-    // {
-
-    // }
-    
+    [Space]
+    public Constants.Team team;
     public BoardTile currentTile;
+    
     
     public void Move(BoardTile targetTile)
     {
@@ -21,5 +21,13 @@ public class ChessPiece : MonoBehaviour
         this.gameObject.transform.localPosition = new Vector3(targetTile.transform.localPosition.x, 2, targetTile.transform.localPosition.z);
 
         currentTile = targetTile;
+    }
+
+    public void Set(Constants.Team setTeam, BoardTile setTile)
+    {
+        team = setTeam;
+
+        currentTile = setTile;
+        currentTile.pieceOnTile = this;
     }
 }
