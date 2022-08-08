@@ -30,12 +30,12 @@ public class BoardTile : MonoBehaviour
 
     public void Moveable()
     {
-        // for moveable notice test
+        // For moveable notice test
         tempColor = tileMesh.material.color;
         tileMesh.material.color = Color.red;
     }
 
-    // for moveable notice test
+    // For moveable notice test
     private Color32 tempColor;
 
     public void SetTileOriginColor()

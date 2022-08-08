@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    //[HideInInspector] public Vector3[,] board = new Vector3[6,6];
+    // 싱글톤
+    public static BoardManager boardManager;
+    
+    private void Awake()
+    {
+        boardManager = this;
+    }
 
     public BoardTile[,] board = new BoardTile[6,6];
 
@@ -19,6 +25,7 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         GenerateBoard();
+        
 
         // 배치 데이터 넘겨받아서 보드에 배치
         foreach(GameObject pieceObject in chessPieces)
@@ -91,16 +98,16 @@ public class BoardManager : MonoBehaviour
 
         if(isFirstMove)
         {
-            CheckGeneralMove(team, pieceColumn, pieceRow, 0, movingDir, 2);
+            CheckGeneralMovement(team, pieceColumn, pieceRow, 0, movingDir, 2);
         }
         else
         {
-            CheckGeneralMove(team, pieceColumn, pieceRow, 0, movingDir);
+            CheckGeneralMovement(team, pieceColumn, pieceRow, 0, movingDir);
         }
     }
 
     // movingDir 값 -1, 0, 1 로 한정짓고 싶을 때 clamp?
-    private void CheckGeneralMove(Constants.Team team, int pieceColumn, int pieceRow, int movingDirX, int movingDirY, int moveCount = 1)
+    private void CheckGeneralMovement(Constants.Team team, int pieceColumn, int pieceRow, int movingDirX, int movingDirY, int moveCount = 1)
     {
         int checkX = pieceColumn;
         int checkY = pieceRow;

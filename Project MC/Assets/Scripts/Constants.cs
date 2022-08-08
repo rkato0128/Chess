@@ -19,11 +19,19 @@ public static class Constants
         KING
     }
 
-    public enum UnitMovingType
+    // 방향 Enum
+    public enum Direction
     {
-        VERTICAL,
-        HORIZONTAL,
-        DIAGONAL,
-        KNIGHT
+        NEGATIVE,
+        ZERO,
+        POSITIVE
     }
+
+    // public enum UnitMovingType
+    // {
+    //     VERTICAL,
+    //     HORIZONTAL,
+    //     DIAGONAL,
+    //     KNIGHT
+    // }
 }
