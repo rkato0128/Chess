@@ -9,7 +9,7 @@ public static class Constants
         BLACK
     }
 
-    public enum UnitType
+    public enum PieceType
     {
         PAWN,
         ROOK,
@@ -18,20 +18,4 @@ public static class Constants
         QUEEN,
         KING
     }
-
-    // 방향 Enum
-    public enum Direction
-    {
-        NEGATIVE,
-        ZERO,
-        POSITIVE
-    }
-
-    // public enum UnitMovingType
-    // {
-    //     VERTICAL,
-    //     HORIZONTAL,
-    //     DIAGONAL,
-    //     KNIGHT
-    // }
 }

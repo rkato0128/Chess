@@ -6,12 +6,26 @@ public class ChessPiece : MonoBehaviour
 {
     // prefab 단에서 설정
     [Header("Piece Initial Option")]
-    public Constants.UnitType type;
+    public Constants.PieceType type;
 
     [Space]
     public Constants.Team team;
     public BoardTile currentTile;
+
+    // Moving Direction Enum
+    public enum Direction
+    {
+        NEGATIVE = -1,
+        ZERO = 0,
+        POSITIVE = 1
+    }
+
     
+    public void Set(BoardTile setTile)
+    {
+        currentTile = setTile;
+        currentTile.pieceOnTile = this;
+    }
     
     public void Move(BoardTile targetTile)
     {
@@ -23,11 +37,40 @@ public class ChessPiece : MonoBehaviour
         currentTile = targetTile;
     }
 
-    public void Set(Constants.Team setTeam, BoardTile setTile)
+    public virtual void CheckPath()
     {
-        team = setTeam;
 
-        currentTile = setTile;
-        currentTile.pieceOnTile = this;
+    }
+
+    public void CheckGeneralPath(Vector2Int boardCoord, Direction dirX, Direction dirY, int moveCount = 1)
+    {
+        int count = 1;
+
+        while(true)
+        {
+            if(boardCoord.x < 0 || boardCoord.x > BM.boardManager.size.x || boardCoord.y < 0 || boardCoord.y > BM.boardManager.size.y || count > moveCount)
+            {
+                break;
+            }
+
+            boardCoord.x += 1 * (int) dirX;
+            boardCoord.y += 1 * (int) dirY;
+
+            if(BM.boardManager.board[boardCoord.x, boardCoord.y].isPieceOnTile)
+            {
+                if(BM.boardManager.board[boardCoord.x, boardCoord.y].pieceOnTile.team != team)
+                {
+                    BM.boardManager.moveableArea.Add(BM.boardManager.board[boardCoord.x, boardCoord.y]);
+                }
+
+                break;
+            }
+            else
+            {
+                BM.boardManager.moveableArea.Add(BM.boardManager.board[boardCoord.x, boardCoord.y]);
+            }
+
+            count++;
+        }
     }
 }

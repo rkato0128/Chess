@@ -247,7 +247,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTurnState: 0
-  boardManager: {fileID: 1187060019}
 --- !u!4 &725151819
 Transform:
   m_ObjectHideFlags: 0
@@ -391,10 +390,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad926db2b573379438d4018b7c75f126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: {x: 6, y: 6}
   chessPieces:
   - {fileID: 1233835409}
   boardTile: {fileID: 3319661505230779521, guid: 79f5d2b9540f3764fa42f7194e7495ae, type: 3}
-  tileSize: 1.2
+  tileSize: 1
+  moveableArea: []
 --- !u!1 &1233835409
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,10 +503,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233835409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee06154e79d874a27a7551f39b8b7da4, type: 3}
+  m_Script: {fileID: 11500000, guid: 63f6dc8fe776d924ca13b01fca38248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 0
+  type: 0
+  team: 0
   currentTile: {fileID: 0}
 --- !u!1001 &3319661505213284995
 PrefabInstance:

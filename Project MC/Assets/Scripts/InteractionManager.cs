@@ -12,7 +12,7 @@ public class InteractionManager : MonoBehaviour
 
     public TurnState currentTurnState;
 
-    [SerializeField] private BoardManager boardManager;
+    //[SerializeField] private BM boardManager;
 
     private void Start()
     {
@@ -43,11 +43,12 @@ public class InteractionManager : MonoBehaviour
         switch(currentTurnState)
         {
             case(TurnState.PIECESELECT):
-                if(hit.transform.gameObject.TryGetComponent<ChessPiece>(out ChessPiece piece)) // Chess Piece Click - GetComponent<>() bool 타입 반환?
+                if(hit.transform.gameObject.TryGetComponent<ChessPiece>(out ChessPiece piece))
                 {
                     selectedPiece = piece;
                     currentTurnState = TurnState.PATHSELECT;
-                    boardManager.CheckPiecePath(selectedPiece);
+                    //boardManager.CheckPiecePath(selectedPiece);
+                    piece.CheckPath();
                     
                     Debug.Log("Chess Piece Selected");
 
@@ -63,10 +64,10 @@ public class InteractionManager : MonoBehaviour
                     currentTurnState = TurnState.PIECESELECT;
 
                     // For test
-                    foreach(BoardTile temp in boardManager.moveableArea)
-                    {
-                        temp.SetTileOriginColor(); 
-                    }
+                    // foreach(BoardTile temp in boardManager.moveableArea)
+                    // {
+                    //     temp.SetTileOriginColor(); 
+                    // }
 
                     Debug.Log("Piece Moved to Tile " + selectedTile.gameObject.name);
                 }

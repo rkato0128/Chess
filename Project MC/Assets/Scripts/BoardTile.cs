@@ -6,18 +6,15 @@ public class BoardTile : MonoBehaviour
 {
     public ChessPiece pieceOnTile;
 
+    // coordinate.x = Column = Vertical (A,B,C...) / coordinate.y = Row = Horizontal (1,2,3...)
+    private Vector2Int _coordinate = new Vector2Int();
+    public Vector2Int coordinate{get{return _coordinate;}}
+
     [Space][Header("Tile Mesh Option")]
     [SerializeField] private MeshRenderer tileMesh;
     [SerializeField] private Color32 tileColBlack;
     [SerializeField] private Color32 tileColWhite;
-
-
-    // Column : Vertical (A,B,C...) / Row : Horizontal (1,2,3...)
-    [SerializeField] private int _column;
-    [SerializeField] private int _row;
-
-    public int column{get{return _column;}}
-    public int row{get{return _row;}}
+    
     
     public bool isPieceOnTile
     {
@@ -26,7 +23,6 @@ public class BoardTile : MonoBehaviour
             return pieceOnTile ? true : false;
         }
     }
-
 
     public void Moveable()
     {
@@ -45,10 +41,10 @@ public class BoardTile : MonoBehaviour
 
 
     // Board Initial Setting
-    public void SetTile(int tileColumn, int tileRow, bool isBlack)
+    public void SetTile(int x, int y, bool isBlack)
     {
-        _column = tileColumn;
-        _row = tileRow;
+        _coordinate.x = x;
+        _coordinate.y = y;
 
         tileMesh.material.color = isBlack ? tileColBlack : tileColWhite;
     }
