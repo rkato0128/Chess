@@ -81,6 +81,11 @@ public class BM : MonoBehaviour
 
     public void ClearMoveableArea()
     {
+        foreach(BoardTile tile in moveableArea)
+        {
+            tile.SetTileOriginColor();
+        }
+
         moveableArea.Clear();
     }
 
@@ -89,7 +94,7 @@ public class BM : MonoBehaviour
         PrintMoveableArea();
     }
 
-    public void PrintMoveableArea() // protection level error
+    public void PrintMoveableArea() // protection level error - 왜?
     {
         foreach(BoardTile tile in moveableArea)
         {

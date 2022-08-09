@@ -63,6 +63,8 @@ public class InteractionManager : MonoBehaviour
                     selectedPiece.Move(selectedTile);
                     currentTurnState = TurnState.PIECESELECT;
 
+                    BM.boardManager.ClearMoveableArea();
+
                     // For test
                     // foreach(BoardTile temp in boardManager.moveableArea)
                     // {

@@ -8,13 +8,14 @@ public class Piece_Pawn : ChessPiece
 
     public override void CheckPath()
     {
-        BM.boardManager.ClearMoveableArea();
+        //BM.boardManager.ClearMoveableArea();
 
         Direction movingDir = (team == Constants.Team.WHITE) ? Direction.POSITIVE : Direction.NEGATIVE;
 
         if(isFirstMove)
         {
             CheckGeneralPath(currentTile.coordinate, Direction.ZERO, movingDir, 2);
+            isFirstMove = false;
         }
         else
         {

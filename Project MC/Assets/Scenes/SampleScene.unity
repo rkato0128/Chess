@@ -503,10 +503,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233835409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f6dc8fe776d924ca13b01fca38248f, type: 3}
+  m_Script: {fileID: 11500000, guid: fdc80c3d12b2160498cee421f1b1cb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   team: 0
   currentTile: {fileID: 0}
 --- !u!1001 &3319661505213284995

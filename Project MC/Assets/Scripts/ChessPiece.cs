@@ -39,7 +39,7 @@ public class ChessPiece : MonoBehaviour
 
     public virtual void CheckPath()
     {
-
+        // 하위 말에서 상속받아 override 해 사용
     }
 
     public void CheckGeneralPath(Vector2Int boardCoord, Direction dirX, Direction dirY, int moveCount = 1)
