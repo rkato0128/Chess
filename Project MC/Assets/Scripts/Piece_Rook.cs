@@ -6,11 +6,11 @@ public class Piece_Rook : ChessPiece
 {
     public override void CheckPath()
     {
-        CheckGeneralPath(currentTile.coordinate, Direction.NEGATIVE, Direction.ZERO, 6);
-        CheckGeneralPath(currentTile.coordinate, Direction.POSITIVE, Direction.ZERO, 6);
-        CheckGeneralPath(currentTile.coordinate, Direction.ZERO, Direction.POSITIVE, 6);
-        CheckGeneralPath(currentTile.coordinate, Direction.ZERO, Direction.NEGATIVE, 6);
+        CheckGeneralPath(currentTile.coordinate, Direction.NEGATIVE, Direction.ZERO, BM.boardManager.size.x);
+        CheckGeneralPath(currentTile.coordinate, Direction.POSITIVE, Direction.ZERO, BM.boardManager.size.x);
+        CheckGeneralPath(currentTile.coordinate, Direction.ZERO, Direction.POSITIVE, BM.boardManager.size.y);
+        CheckGeneralPath(currentTile.coordinate, Direction.ZERO, Direction.NEGATIVE, BM.boardManager.size.y);
 
-        //BM.boardManager.PrintPath();
+        BM.boardManager.PrintMoveableArea();
     }
 }

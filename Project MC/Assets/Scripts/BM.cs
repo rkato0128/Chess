@@ -108,11 +108,9 @@ public class BM : MonoBehaviour
         switch (currentTurnState)
         {
             case (TurnState.PIECESELECT):
-                if (hit.transform.gameObject.TryGetComponent<ChessPiece>(out selectedPiece))
+                if (hit.transform.gameObject.TryGetComponent<ChessPiece>(out selectedPiece)) // Piece Click
                 {
                     currentTurnState = TurnState.PATHSELECT;
-
-                    //selectedPiece = piece;
                     selectedPiece.CheckPath();
 
                     Debug.Log("Chess Piece Selected");
@@ -133,7 +131,6 @@ public class BM : MonoBehaviour
 
                         Debug.Log("Piece Moved to Tile " + selectedTile.gameObject.name);
                     }
-
                 }
                 break;
         }

@@ -49,13 +49,15 @@ public class ChessPiece : MonoBehaviour
 
         while(true)
         {
-            if(boardCoord.x < 0 || boardCoord.x > BM.boardManager.size.x || boardCoord.y < 0 || boardCoord.y > BM.boardManager.size.y || count > moveCount)
+            boardCoord.x += 1 * (int) dirX;
+            boardCoord.y += 1 * (int) dirY;
+            
+            if(boardCoord.x < 0 || boardCoord.x >= BM.boardManager.size.x || boardCoord.y < 0 || boardCoord.y >= BM.boardManager.size.y || count > moveCount)
             {
                 break;
             }
 
-            boardCoord.x += 1 * (int) dirX;
-            boardCoord.y += 1 * (int) dirY;
+            //Debug.Log("board X : " + boardCoord.x + " board Y :" + boardCoord.y);
 
             if(BM.boardManager.board[boardCoord.x, boardCoord.y].isPieceOnTile)
             {
