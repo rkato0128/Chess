@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -246,7 +246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ad995c4203b4c6596d75fb1c00d46b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTurnState: 0
 --- !u!4 &725151819
 Transform:
   m_ObjectHideFlags: 0
@@ -395,6 +394,7 @@ MonoBehaviour:
   - {fileID: 1233835409}
   boardTile: {fileID: 3319661505230779521, guid: 79f5d2b9540f3764fa42f7194e7495ae, type: 3}
   tileSize: 1
+  currentTurnState: 0
   moveableArea: []
 --- !u!1 &1233835409
 GameObject:
@@ -503,10 +503,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233835409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc80c3d12b2160498cee421f1b1cb28, type: 3}
+  m_Script: {fileID: 11500000, guid: 63f6dc8fe776d924ca13b01fca38248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 0
   team: 0
   currentTile: {fileID: 0}
 --- !u!1001 &3319661505213284995

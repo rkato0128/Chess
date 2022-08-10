@@ -26,6 +26,7 @@ public class ChessPiece : MonoBehaviour
         currentTile = setTile;
         currentTile.pieceOnTile = this;
     }
+
     
     public void Move(BoardTile targetTile)
     {

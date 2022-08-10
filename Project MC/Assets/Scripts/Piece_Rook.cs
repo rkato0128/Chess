@@ -11,6 +11,6 @@ public class Piece_Rook : ChessPiece
         CheckGeneralPath(currentTile.coordinate, Direction.ZERO, Direction.POSITIVE, 6);
         CheckGeneralPath(currentTile.coordinate, Direction.ZERO, Direction.NEGATIVE, 6);
 
-        BM.boardManager.PrintPath();
+        //BM.boardManager.PrintPath();
     }
 }
