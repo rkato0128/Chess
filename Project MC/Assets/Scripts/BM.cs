@@ -113,6 +113,8 @@ public class BM : MonoBehaviour
                     currentTurnState = TurnState.PATHSELECT;
                     selectedPiece.CheckPath();
 
+                    PrintMoveableArea();
+
                     Debug.Log("Chess Piece Selected");
 
                     //Debug.Log("is Piece Same in Array" + selectedPiece.Equals(boardManager.chessPieces[0])); // 값이 다름? - 식별 인덱스 추가

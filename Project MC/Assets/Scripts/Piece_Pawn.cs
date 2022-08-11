@@ -19,7 +19,5 @@ public class Piece_Pawn : ChessPiece
         {
             CheckGeneralPath(currentTile.coordinate, Direction.ZERO, movingDir);
         }
-
-        BM.boardManager.PrintMoveableArea();
     }
 }

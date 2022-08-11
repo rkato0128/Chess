@@ -38,6 +38,7 @@ public class ChessPiece : MonoBehaviour
         currentTile = targetTile;
     }
 
+
     public virtual void CheckPath()
     {
         // 하위 말에서 상속받아 override 해 사용
