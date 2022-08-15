@@ -9,6 +9,27 @@ public class Piece_Pawn : ChessPiece
     public override void CheckPath()
     {
         Direction movingDir = (team == Constants.Team.WHITE) ? Direction.POSITIVE : Direction.NEGATIVE;
+        
+        int attackDirection = 1;
+        int attackCheckPos;
+
+        for(int i = 0; i < 2; i++)
+        {
+            attackCheckPos = currentTile.coordinate.x - 1 * attackDirection;
+
+            if(attackCheckPos > -1 && attackCheckPos < BM.boardManager.size.x)
+            {
+                if(BM.boardManager.board[attackCheckPos, currentTile.coordinate.y + 1 * (int)movingDir].isPieceOnTile)
+                {
+                    if (BM.boardManager.board[attackCheckPos, currentTile.coordinate.y + 1 * (int)movingDir].pieceOnTile.team != this.team)
+                    {
+                        BM.boardManager.moveableArea.Add(BM.boardManager.board[attackCheckPos, currentTile.coordinate.y + 1 * (int)movingDir]);
+                    }
+                }
+            }
+
+            attackDirection = -1;
+        }
 
         if(isFirstMove)
         {

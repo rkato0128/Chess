@@ -25,6 +25,8 @@ public class ChessPiece : MonoBehaviour
     {
         currentTile = setTile;
         currentTile.pieceOnTile = this;
+
+        this.gameObject.transform.localPosition = new Vector3(setTile.transform.localPosition.x, 0.5f, setTile.transform.localPosition.z);
     }
 
     
@@ -33,7 +35,7 @@ public class ChessPiece : MonoBehaviour
         currentTile.pieceOnTile = null;
 
         targetTile.pieceOnTile = this;
-        this.gameObject.transform.localPosition = new Vector3(targetTile.transform.localPosition.x, 2, targetTile.transform.localPosition.z);
+        this.gameObject.transform.localPosition = new Vector3(targetTile.transform.localPosition.x, 0.5f, targetTile.transform.localPosition.z);
 
         currentTile = targetTile;
     }
