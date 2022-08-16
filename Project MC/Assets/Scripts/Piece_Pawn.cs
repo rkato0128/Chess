@@ -9,7 +9,8 @@ public class Piece_Pawn : ChessPiece
     public override void CheckPath()
     {
         Direction movingDir = (team == Constants.Team.WHITE) ? Direction.POSITIVE : Direction.NEGATIVE;
-        
+
+        // 공격 가능한 경우 처리
         int attackDirection = 1;
         int attackCheckPos;
 
