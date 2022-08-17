@@ -79,4 +79,23 @@ public class ChessPiece : MonoBehaviour
             count++;
         }
     }
+
+    public void CheckTileMoveable(Vector2Int boardCoord)
+    {
+        if (boardCoord.x > -1 && boardCoord.x < BM.boardManager.size.x &&
+            boardCoord.y > -1 && boardCoord.y < BM.boardManager.size.y)
+        {
+            if (BM.boardManager.board[boardCoord.x, boardCoord.y].isPieceOnTile)
+            {
+                if (BM.boardManager.board[boardCoord.x, boardCoord.y].pieceOnTile.team != team)
+                {
+                    BM.boardManager.moveableArea.Add(BM.boardManager.board[boardCoord.x, boardCoord.y]);
+                }
+            }
+            else
+            {
+                BM.boardManager.moveableArea.Add(BM.boardManager.board[boardCoord.x, boardCoord.y]);
+            }
+        }
+    }
 }
