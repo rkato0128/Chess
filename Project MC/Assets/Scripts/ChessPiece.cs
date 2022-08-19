@@ -32,12 +32,31 @@ public class ChessPiece : MonoBehaviour
     
     public void Move(BoardTile targetTile)
     {
+        // Attack
+        if (targetTile.isPieceOnTile)
+        {
+            targetTile.pieceOnTile.Death();
+        }
+
+        // Move
         currentTile.pieceOnTile = null;
 
         targetTile.pieceOnTile = this;
         this.gameObject.transform.localPosition = new Vector3(targetTile.transform.localPosition.x, 0.5f, targetTile.transform.localPosition.z);
 
         currentTile = targetTile;
+    }
+
+    public void Death()
+    {
+        currentTile.pieceOnTile = null;
+
+        if (type == Constants.PieceType.KING)
+        {
+            // End Game
+        }
+
+        Destroy(this.gameObject);
     }
 
 

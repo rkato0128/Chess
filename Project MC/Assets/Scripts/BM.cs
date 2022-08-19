@@ -32,6 +32,8 @@ public class BM : MonoBehaviour
     [System.NonSerialized] public BoardTile[,] board;
     public GameObject[] chessPieces;
 
+    public Constants.Team currentTeamTurn;
+
     [Space]
     [SerializeField] private GameObject boardTile;
     [SerializeField] private float tileSize = 1;
@@ -41,6 +43,8 @@ public class BM : MonoBehaviour
     {
         board = new BoardTile[size.x, size.y];
         GenerateBoard();
+
+        currentTeamTurn = Constants.Team.WHITE;
 
         // 배치 데이터 넘겨받아서 보드에 배치 / 테스트용
         int i = 0;
@@ -78,6 +82,13 @@ public class BM : MonoBehaviour
     }
 
 
+    // Game State
+    private void ChangeTurn()
+    {
+        currentTeamTurn = currentTeamTurn == Constants.Team.WHITE ? Constants.Team.BLACK : Constants.Team.WHITE;
+    }
+
+
     // Handling Raycast interaction
     private void Update()
     {
@@ -105,15 +116,23 @@ public class BM : MonoBehaviour
         {
             hit.transform.gameObject.TryGetComponent<ChessPiece>(out selectedPiece);
 
-            if (pieceSelectedState)
+            // 현재 팀 순서 체크
+            if (selectedPiece.team == currentTeamTurn)
             {
-                ClearMoveableArea();
+                if (pieceSelectedState)
+                {
+                    ClearMoveableArea();
+                }
+
+                pieceSelectedState = true;
+                selectedPiece.CheckPath();
+
+                PrintMoveableArea();
             }
-
-            pieceSelectedState = true;
-            selectedPiece.CheckPath();
-
-            PrintMoveableArea();
+            else
+            {
+                // 현재 선택한 말이 공격 가능한 말인지 체크
+            }
 
             Debug.Log("Chess Piece Selected - " + selectedPiece.gameObject.name);
 
