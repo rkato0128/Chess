@@ -30,7 +30,8 @@ public class BM : MonoBehaviour
     // Board Manager
     public Vector2Int size = new Vector2Int(6, 6);
     [System.NonSerialized] public BoardTile[,] board;
-    public GameObject[] chessPieces;
+    public GameObject[] chessPieceWhite;
+    public GameObject[] chessPieceBlack;
 
     public Constants.Team currentTeamTurn;
 
@@ -49,10 +50,18 @@ public class BM : MonoBehaviour
         // 배치 데이터 넘겨받아서 보드에 배치 / 테스트용
         int i = 0;
 
-        foreach (GameObject pieceObject in chessPieces)
+        foreach (GameObject pieceObject in chessPieceWhite)
         {
             pieceObject.GetComponent<ChessPiece>().Set(board[i, 0]);
             i++;
+        }
+
+        int j = 0;
+
+        foreach (GameObject pieceObject in chessPieceBlack)
+        {
+            pieceObject.GetComponent<ChessPiece>().Set(board[j, 5]);
+            j++;
         }
     }
 
@@ -86,13 +95,14 @@ public class BM : MonoBehaviour
     private void ChangeTurn()
     {
         currentTeamTurn = currentTeamTurn == Constants.Team.WHITE ? Constants.Team.BLACK : Constants.Team.WHITE;
+        UIManager.uiManager.ChangeTurnImg(currentTeamTurn);
     }
 
 
     // Handling Raycast interaction
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -108,47 +118,55 @@ public class BM : MonoBehaviour
     private ChessPiece selectedPiece;
     private BoardTile selectedTile;
 
-    private bool pieceSelectedState = false;
+    private bool isPieceSelected = false;
 
     private void Interaction(RaycastHit hit)
     {
         if (hit.transform.gameObject.GetComponent<ChessPiece>()) // Piece Click
         {
-            hit.transform.gameObject.TryGetComponent<ChessPiece>(out selectedPiece);
+            hit.transform.gameObject.TryGetComponent<ChessPiece>(out ChessPiece piece);
+            Debug.Log("Chess Piece Selected - " + piece.gameObject.name);
 
-            // 현재 팀 순서 체크
-            if (selectedPiece.team == currentTeamTurn)
+            if (piece.team == currentTeamTurn) // 현재 팀 순서 체크
             {
-                if (pieceSelectedState)
+                if (isPieceSelected)
                 {
                     ClearMoveableArea();
                 }
 
-                pieceSelectedState = true;
+                isPieceSelected = true;
+
+                selectedPiece = piece;
                 selectedPiece.CheckPath();
 
                 PrintMoveableArea();
             }
-            else
+            else if (isPieceSelected && moveableArea.Contains(piece.currentTile)) // 적 말 선택시, 공격 가능한 말인지 체크
             {
-                // 현재 선택한 말이 공격 가능한 말인지 체크
+                Debug.Log("Piece Moved to Piece " + piece.gameObject.name);
+
+                selectedPiece.Move(piece.currentTile);
+                isPieceSelected = false;
+                ClearMoveableArea();
+
+                ChangeTurn();
             }
 
-            Debug.Log("Chess Piece Selected - " + selectedPiece.gameObject.name);
-
-            //Debug.Log("is Piece Same in Array" + selectedPiece.Equals(boardManager.chessPieces[0])); // 값이 다름? - 식별 인덱스 추가
+            //Debug.Log("is Piece Same in Array" + selectedPiece.Equals(boardManager.chessPieces[0])); // 값이 다름
         }
-        else if (pieceSelectedState)
+        else if (isPieceSelected)
         {
             if (hit.transform.gameObject.TryGetComponent<BoardTile>(out selectedTile)) // Tile Click
             {
                 if (moveableArea.Contains(selectedTile))
                 {
                     selectedPiece.Move(selectedTile);
-                    pieceSelectedState = false;
+                    isPieceSelected = false;
                     ClearMoveableArea();
 
                     Debug.Log("Piece Moved to Tile " + selectedTile.gameObject.name);
+
+                    ChangeTurn();
                 }
             }
         }

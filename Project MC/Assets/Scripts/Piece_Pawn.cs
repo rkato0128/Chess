@@ -32,14 +32,15 @@ public class Piece_Pawn : ChessPiece
             attackDirection = -1;
         }
 
+        // Pawn Movement
         if(isFirstMove)
         {
-            CheckGeneralPath(currentTile.coordinate, Direction.ZERO, movingDir, 2);
+            CheckGeneralPath(currentTile.coordinate, Direction.ZERO, movingDir, 2, true);
             isFirstMove = false;
         }
         else
         {
-            CheckGeneralPath(currentTile.coordinate, Direction.ZERO, movingDir);
+            CheckGeneralPath(currentTile.coordinate, Direction.ZERO, movingDir, 1, true);
         }
     }
 }

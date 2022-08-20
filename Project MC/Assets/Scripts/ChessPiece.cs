@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ChessPiece : MonoBehaviour
@@ -9,7 +10,8 @@ public class ChessPiece : MonoBehaviour
     public Constants.PieceType type;
 
     [Space]
-    public Constants.Team team;
+    [SerializeField] private Constants.Team _team;
+    public Constants.Team team { get { return _team; } }
     public BoardTile currentTile;
 
     // Moving Direction Enum
@@ -65,7 +67,8 @@ public class ChessPiece : MonoBehaviour
         // 하위 말에서 상속받아 override 해 사용
     }
 
-    public void CheckGeneralPath(Vector2Int boardCoord, Direction dirX, Direction dirY, int moveCount = 1)
+    // 일반적인 경로 계산
+    public void CheckGeneralPath(Vector2Int boardCoord, Direction dirX, Direction dirY, int moveCount = 1, bool isPawn = false)
     {
         int count = 1;
 
@@ -83,7 +86,7 @@ public class ChessPiece : MonoBehaviour
 
             if(BM.boardManager.board[boardCoord.x, boardCoord.y].isPieceOnTile)
             {
-                if(BM.boardManager.board[boardCoord.x, boardCoord.y].pieceOnTile.team != team)
+                if(BM.boardManager.board[boardCoord.x, boardCoord.y].pieceOnTile.team != team && !isPawn)
                 {
                     BM.boardManager.moveableArea.Add(BM.boardManager.board[boardCoord.x, boardCoord.y]);
                 }
@@ -99,6 +102,7 @@ public class ChessPiece : MonoBehaviour
         }
     }
 
+    // 한 타일이 이동 가능한 타일인지 확인
     public void CheckTileMoveable(Vector2Int boardCoord)
     {
         if (boardCoord.x > -1 && boardCoord.x < BM.boardManager.size.x &&
@@ -116,5 +120,10 @@ public class ChessPiece : MonoBehaviour
                 BM.boardManager.moveableArea.Add(BM.boardManager.board[boardCoord.x, boardCoord.y]);
             }
         }
+    }
+
+    public void Check()
+    { 
+
     }
 }
