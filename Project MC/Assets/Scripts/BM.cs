@@ -30,6 +30,16 @@ public class BM : MonoBehaviour
     // Board Manager
     public Vector2Int size = new Vector2Int(6, 6);
     [System.NonSerialized] public BoardTile[,] board;
+
+    public enum GamePhase
+    {
+        Deploy,
+        Play
+    }
+
+    private GamePhase _currentPhase;
+    public GamePhase currentPhase{ get { return _currentPhase; } }
+
     public GameObject[] chessPieceWhite;
     public GameObject[] chessPieceBlack;
 
@@ -90,8 +100,14 @@ public class BM : MonoBehaviour
         }
     }
 
+    // Deploy Phase
+    private void DeployPiece()
+    {
+        // Deploy Piece
+    }
 
-    // Game State
+
+    // Play Phase
     private void ChangeTurn()
     {
         currentTeamTurn = currentTeamTurn == Constants.Team.WHITE ? Constants.Team.BLACK : Constants.Team.WHITE;

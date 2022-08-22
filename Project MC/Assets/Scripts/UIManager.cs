@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
     [SerializeField] private Image turnImg;
 
     public void ChangeTurnImg(Constants.Team team)
