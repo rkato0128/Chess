@@ -40,6 +40,8 @@ public class BM : MonoBehaviour
     private GamePhase _currentPhase;
     public GamePhase currentPhase{ get { return _currentPhase; } }
 
+    public bool isCardSelected = false;
+
     public GameObject[] chessPieceWhite;
     public GameObject[] chessPieceBlack;
 
@@ -58,6 +60,8 @@ public class BM : MonoBehaviour
         currentTeamTurn = Constants.Team.WHITE;
 
         // 배치 데이터 넘겨받아서 보드에 배치 / 테스트용
+        _currentPhase = GamePhase.Play;
+
         int i = 0;
 
         foreach (GameObject pieceObject in chessPieceWhite)
@@ -99,21 +103,7 @@ public class BM : MonoBehaviour
             isBlack = isBlack ? false : true;
         }
     }
-
-    // Deploy Phase
-    private void DeployPiece()
-    {
-        // Deploy Piece
-    }
-
-
-    // Play Phase
-    private void ChangeTurn()
-    {
-        currentTeamTurn = currentTeamTurn == Constants.Team.WHITE ? Constants.Team.BLACK : Constants.Team.WHITE;
-        UIManager.uiManager.ChangeTurnImg(currentTeamTurn);
-    }
-
+    
 
     // Handling Raycast interaction
     private void Update()
@@ -126,17 +116,67 @@ public class BM : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 Debug.Log("Raycast Hit : " + hit.transform.gameObject.name);
-                Interaction(hit);
+
+                switch (currentPhase)
+                {
+                    case GamePhase.Deploy :
+                        InteractionDeploy(hit);
+                        break;
+
+                    case GamePhase.Play:
+                        InteractionPlay(hit);
+                        break;
+                }
             }
         }
     }
+
+
+    // Deploy Phase
+    private void DeployPiece()
+    {
+        // Deploy Piece
+    }
+
+    public void EndDeploy() // UI Manager 에서 호출
+    { 
+        _currentPhase = GamePhase.Play;
+    }
+
+    private void CheckDelpoymentProgress()
+    {
+        
+    }
+
+
+    // Deploy Interaction
+    private void InteractionDeploy(RaycastHit hit)
+    {
+        if (isCardSelected && hit.transform.gameObject.TryGetComponent<BoardTile>(out BoardTile tile))
+        {
+
+            isCardSelected = false;
+
+            CheckDelpoymentProgress();
+        }
+    }
+
+
+
+    // Play Phase
+    private void ChangeTurn()
+    {
+        currentTeamTurn = currentTeamTurn == Constants.Team.WHITE ? Constants.Team.BLACK : Constants.Team.WHITE;
+        UIManager.uiManager.ChangeTurnImg(currentTeamTurn);
+    }
+
 
     private ChessPiece selectedPiece;
     private BoardTile selectedTile;
 
     private bool isPieceSelected = false;
 
-    private void Interaction(RaycastHit hit)
+    private void InteractionPlay(RaycastHit hit)
     {
         if (hit.transform.gameObject.GetComponent<ChessPiece>()) // Piece Click
         {
