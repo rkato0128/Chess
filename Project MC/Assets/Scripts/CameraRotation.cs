@@ -7,7 +7,7 @@ public class CameraRotation : MonoBehaviour
 {
     [SerializeField] private GameObject target;
     [SerializeField] private float rotationXSpeed = 500f;
-    [SerializeField] private float rotationYSpeed = 100f;
+    [SerializeField] private float rotationYSpeed = 0f;
 
     private Vector3 targetPoint;
 
