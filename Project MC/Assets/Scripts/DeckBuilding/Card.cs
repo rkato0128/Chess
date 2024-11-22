@@ -8,11 +8,13 @@ public class Card : MonoBehaviour
 {
     public Constants.PieceType type;
     public int cardAmount = 0;
+    private int cost;
 
     [SerializeField] private Button buttonIncrease;
     [SerializeField] private Button buttonDecrease;
     [SerializeField] private TextMeshProUGUI cardName;
     [SerializeField] private TextMeshProUGUI cardAmountText;
+    [SerializeField] private TextMeshProUGUI cardCostText;
 
 
     private void Awake()
@@ -20,20 +22,37 @@ public class Card : MonoBehaviour
         buttonIncrease.onClick.AddListener(Increase);
         buttonDecrease.onClick.AddListener(Decrease);
 
+        cost = Constants.PieceCost[type];
+
         // Initialize Value
         cardName.text = type.ToString();
         cardAmountText.text = cardAmount.ToString();
+        cardCostText.text = "Cost " + cost.ToString();
     }
 
     private void Increase()
     {
-        // Max 값 가져와서 limit 처리 
-        cardAmount++;
+        // check limit on DeckBuildingManager method
+        if(DeckBuildingManager.deckManager.CheckIncreaseCost(cost))
+        {
+            cardAmount++;
+            cardAmountText.text = cardAmount.ToString();
+            Debug.Log(type.ToString() + " - cardAmount : " + cardAmount);
+        }
     }
 
     private void Decrease()
     {
-        // 0 이하로 못 내려가도록 처리 
-        cardAmount--;
+        // check card num is over 0
+        if(cardAmount - 1 >= 0)
+        {
+            // check cost is under 0 on DeckBuildingManager method
+            if(DeckBuildingManager.deckManager.CheckDecreaseCost(cost) && (cardAmount - 1) >= 0)
+            {
+                cardAmount--;
+                cardAmountText.text = cardAmount.ToString();
+                Debug.Log(type.ToString() + " - cardAmount : " + cardAmount);
+            }
+        }
     }
 }

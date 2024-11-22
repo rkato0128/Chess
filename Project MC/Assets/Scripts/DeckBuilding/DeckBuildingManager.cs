@@ -6,17 +6,80 @@ using TMPro;
 
 public class DeckBuildingManager : MonoBehaviour
 {
+    // Singleton
+    private static DeckBuildingManager _deckManager = null;
+    
+    private void Awake()
+    {
+        if(_deckManager == null)
+        {
+            _deckManager = this;
+        }
+    }
+
+    public static DeckBuildingManager deckManager
+    {
+        get
+        {
+            if(_deckManager == null)
+            {
+                return null;
+            }
+            return _deckManager;
+        }
+    }
+
+
     [SerializeField] private TextMeshProUGUI currentCostText;
 
-    [SerializeField] private float deckMaxCost = 5;
-    private float deckCost;
-
-    private string costString;
+    [SerializeField] private float deckMaxCost = 10;
+    private float currentCost = 0;
 
 
-    public void IncreaseCost()
+
+    private void Start()
     {
+        UpdateCostText();
+    }
 
+    // check condition and increase cost / return boolean
+    public bool CheckIncreaseCost(int cost)
+    {
+        if(currentCost + cost <= deckMaxCost)
+        {
+            currentCost += cost;
+            UpdateCostText();
+            Debug.Log("Cost Increased to : " + currentCost);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // check condition and decrease cost / return boolean
+    public bool CheckDecreaseCost(int cost)
+    {
+        if(currentCost - cost >= 0)
+        {
+            currentCost -= cost;
+            UpdateCostText();
+            Debug.Log("Cost Decreased to : " + currentCost);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // Update Cost Text
+    private void UpdateCostText()
+    {
+        currentCostText.text = currentCost + " / " + deckMaxCost;
     }
 
     private void SaveDeckData(Constants.Team team)
