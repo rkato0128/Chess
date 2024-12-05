@@ -7,7 +7,7 @@ using TMPro;
 public class Card : MonoBehaviour
 {
     public Constants.PieceType type;
-    public int cardAmount = 0;
+    private int cardAmount = 0;
     private int cost;
 
     [SerializeField] private Button buttonIncrease;
@@ -33,11 +33,11 @@ public class Card : MonoBehaviour
     private void Increase()
     {
         // check limit on DeckBuildingManager method
-        if(DeckBuildingManager.deckManager.CheckIncreaseCost(cost))
+        if(DeckBuildingManager.deckManager.CheckIncreaseCard(type))
         {
             cardAmount++;
             cardAmountText.text = cardAmount.ToString();
-            Debug.Log(type.ToString() + " - cardAmount : " + cardAmount);
+            //Debug.Log(type.ToString() + " - cardAmount : " + cardAmount);
         }
     }
 
@@ -47,11 +47,11 @@ public class Card : MonoBehaviour
         if(cardAmount - 1 >= 0)
         {
             // check cost is under 0 on DeckBuildingManager method
-            if(DeckBuildingManager.deckManager.CheckDecreaseCost(cost) && (cardAmount - 1) >= 0)
+            if(DeckBuildingManager.deckManager.CheckDecreaseCard(type))
             {
                 cardAmount--;
                 cardAmountText.text = cardAmount.ToString();
-                Debug.Log(type.ToString() + " - cardAmount : " + cardAmount);
+                //Debug.Log(type.ToString() + " - cardAmount : " + cardAmount);
             }
         }
     }

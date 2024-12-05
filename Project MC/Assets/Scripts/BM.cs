@@ -61,6 +61,8 @@ public class BM : MonoBehaviour
 
         // 배치 데이터 넘겨받아서 보드에 배치 / 테스트용
         _currentPhase = GamePhase.Play;
+        LoadDeckData(Constants.Team.WHITE); // Test
+        LoadDeckData(Constants.Team.BLACK); // Test
 
         int i = 0;
 
@@ -78,6 +80,8 @@ public class BM : MonoBehaviour
             j++;
         }
     }
+    
+    
 
     private void GenerateBoard()
     {
@@ -104,6 +108,25 @@ public class BM : MonoBehaviour
         }
     }
     
+    // Load Deck Data
+    private int[] deckData = new int[5];
+
+    void LoadDeckData(Constants.Team team)
+    {
+        for(int i = 0; i < deckData.Length; ++i)
+        {
+            string key = ((int)team).ToString() + "_" + i.ToString();
+            if(PlayerPrefs.HasKey(key))
+            {
+                deckData[i] = PlayerPrefs.GetInt(key);
+                Debug.Log("Load Deck Data : " + key + " : " + deckData[i]);
+            }
+        }
+    }
+
+    // Set Deck Hand
+    
+
 
     // Handling Raycast interaction
     private void Update()
@@ -133,6 +156,11 @@ public class BM : MonoBehaviour
 
 
     // Deploy Phase
+    // #1 Select Card > Touch Tile || Select Deployed Piece > Touch Tile
+    // #2 Confirm Button
+    // #3 Opposite Turn
+    // #4 When both player ready > Enter the Play phase
+
     private void DeployPiece()
     {
         // Deploy Piece

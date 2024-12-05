@@ -11,11 +11,11 @@ public static class Constants
 
     public enum PieceType
     {
-        PAWN = 1,
-        ROOK = 2,
-        KNIGHT = 3,
-        BISHOP = 4,
-        QUEEN = 5,
+        PAWN,
+        ROOK,
+        KNIGHT,
+        BISHOP,
+        QUEEN,
         KING
     }
 
