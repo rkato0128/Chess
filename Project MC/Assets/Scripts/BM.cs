@@ -40,7 +40,7 @@ public class BM : MonoBehaviour
     private GamePhase _currentPhase;
     public GamePhase currentPhase{ get { return _currentPhase; } }
 
-    public bool isCardSelected = false;
+    public bool isCardSelected = false; // check Deply phase status
 
     public GameObject[] chessPieceWhite;
     public GameObject[] chessPieceBlack;
@@ -50,6 +50,9 @@ public class BM : MonoBehaviour
     [Space]
     [SerializeField] private GameObject boardTile;
     [SerializeField] private float tileSize = 1;
+
+    [Space]
+    [SerializeField] private CardGroup cardGroup;
 
 
     private void Start()
@@ -61,8 +64,8 @@ public class BM : MonoBehaviour
 
         // 배치 데이터 넘겨받아서 보드에 배치 / 테스트용
         _currentPhase = GamePhase.Play;
-        LoadDeckData(Constants.Team.WHITE); // Test
-        LoadDeckData(Constants.Team.BLACK); // Test
+        // LoadDeckData(Constants.Team.WHITE); // Test
+        // LoadDeckData(Constants.Team.BLACK); // Test
 
         int i = 0;
 
@@ -109,22 +112,27 @@ public class BM : MonoBehaviour
     }
     
     // Load Deck Data
-    private int[] deckData = new int[5];
+    // private int[] deckData = new int[5];
 
-    void LoadDeckData(Constants.Team team)
-    {
-        for(int i = 0; i < deckData.Length; ++i)
-        {
-            string key = ((int)team).ToString() + "_" + i.ToString();
-            if(PlayerPrefs.HasKey(key))
-            {
-                deckData[i] = PlayerPrefs.GetInt(key);
-                Debug.Log("Load Deck Data : " + key + " : " + deckData[i]);
-            }
-        }
-    }
+    // void LoadDeckData(Constants.Team team)
+    // {
+    //     for(int i = 0; i < deckData.Length; ++i)
+    //     {
+    //         string key = ((int)team).ToString() + "_" + i.ToString();
+    //         if(PlayerPrefs.HasKey(key))
+    //         {
+    //             deckData[i] = PlayerPrefs.GetInt(key);
+    //             Debug.Log("Load Deck Data : " + key + " : " + deckData[i]);
+    //         }
+    //     }
+    // }
 
     // Set Deck Hand
+    private void SetHand()
+    {
+        cardGroup.team = currentTeamTurn;
+        cardGroup.LoadDeckDataToCardSet();
+    }
     
 
 
@@ -156,7 +164,7 @@ public class BM : MonoBehaviour
 
 
     // Deploy Phase
-    // #1 Select Card > Touch Tile || Select Deployed Piece > Touch Tile
+    // #1 Select Card > Touch Tile || Select Deployed Piece > Touch Tile (Pass Second UX now)
     // #2 Confirm Button
     // #3 Opposite Turn
     // #4 When both player ready > Enter the Play phase
@@ -164,6 +172,7 @@ public class BM : MonoBehaviour
     private void DeployPiece()
     {
         // Deploy Piece
+        // And Delete Card on hand
     }
 
     public void EndDeploy() // UI Manager 에서 호출
@@ -173,7 +182,7 @@ public class BM : MonoBehaviour
 
     private void CheckDelpoymentProgress()
     {
-        
+        // Check Progress and if deploy ends, turn next phase
     }
 
 
