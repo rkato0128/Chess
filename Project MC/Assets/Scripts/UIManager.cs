@@ -28,19 +28,21 @@ public class UIManager : MonoBehaviour
     }
 
 
-    [SerializeField] private Image turnImg;
+    [SerializeField] private GameObject turnWhite;
+    [SerializeField] private GameObject turnBlack;
+    [SerializeField] private GameObject winUI_White;
+    [SerializeField] private GameObject winUI_Black;
 
     public void ChangeTurnImg(Constants.Team team)
     {
-        switch (team)
-        {
-            case Constants.Team.WHITE :
-                turnImg.color = Color.white;
-                break;
+        turnWhite.SetActive(team == Constants.Team.WHITE ? true : false);
+        turnBlack.SetActive(team == Constants.Team.BLACK ? true : false);
+    }
 
-            case Constants.Team.BLACK :
-                turnImg.color = Color.black;
-                break;
-        }
+    public void PrintWin(Constants.Team team)
+    {
+        // Print Win UI
+        winUI_White.SetActive(team == Constants.Team.WHITE ? true : false);
+        winUI_Black.SetActive(team == Constants.Team.BLACK ? true : false);
     }
 }

@@ -16,6 +16,11 @@ public class Card : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cardAmountText;
     [SerializeField] private TextMeshProUGUI cardCostText;
 
+    [SerializeField] private GameObject cardBg_white;
+    [SerializeField] private GameObject cardBg_black;
+    [SerializeField] private Image pieceImage;
+    [SerializeField] private Sprite[] pieceImgResources;
+
 
     private void Awake()
     {
@@ -24,10 +29,22 @@ public class Card : MonoBehaviour
 
         cost = Constants.PieceCost[type];
 
+        SetData(Constants.Team.WHITE);
+
         // Initialize Value
         cardName.text = type.ToString();
         cardAmountText.text = cardAmount.ToString();
-        cardCostText.text = "Cost " + cost.ToString();
+        cardCostText.text = cost.ToString();
+    }
+
+    public void SetData(Constants.Team team)
+    {
+        // Set Piece Image : white 0~5 / black 6~11
+        pieceImage.sprite = pieceImgResources[(int)type + 6 * (int)team];
+
+        // Set Card Bg by team
+        cardBg_white.SetActive(team == Constants.Team.WHITE ? true : false);
+        cardBg_black.SetActive(team == Constants.Team.BLACK ? true : false);
     }
 
     private void Increase()

@@ -17,5 +17,7 @@ public class Piece_Knight : ChessPiece
 
         CheckTileMoveable(new Vector2Int(currentTile.coordinate.x - 1, currentTile.coordinate.y - 2));
         CheckTileMoveable(new Vector2Int(currentTile.coordinate.x - 2, currentTile.coordinate.y - 1));
+
+        PieceSelectedAnim();
     }
 }

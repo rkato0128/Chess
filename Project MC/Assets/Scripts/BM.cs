@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BM : MonoBehaviour
 {
@@ -34,13 +35,16 @@ public class BM : MonoBehaviour
     public enum GamePhase
     {
         Deploy,
-        Play
+        Play,
+        End
     }
 
     private GamePhase _currentPhase;
     public GamePhase currentPhase{ get { return _currentPhase; } }
 
-    public bool isCardSelected = false; // check Deply phase status
+    private bool isCardSelected = false; // check Deply phase status
+    private Constants.PieceType selectedCardType;
+
 
     public GameObject[] chessPieceWhite;
     public GameObject[] chessPieceBlack;
@@ -62,26 +66,9 @@ public class BM : MonoBehaviour
 
         currentTeamTurn = Constants.Team.WHITE;
 
-        // 배치 데이터 넘겨받아서 보드에 배치 / 테스트용
-        _currentPhase = GamePhase.Play;
-        // LoadDeckData(Constants.Team.WHITE); // Test
-        // LoadDeckData(Constants.Team.BLACK); // Test
-
-        int i = 0;
-
-        foreach (GameObject pieceObject in chessPieceWhite)
-        {
-            pieceObject.GetComponent<ChessPiece>().Set(board[i, 0]);
-            i++;
-        }
-
-        int j = 0;
-
-        foreach (GameObject pieceObject in chessPieceBlack)
-        {
-            pieceObject.GetComponent<ChessPiece>().Set(board[j, 5]);
-            j++;
-        }
+        _currentPhase = GamePhase.Deploy;
+        SetHand();
+        PrintDeployArea(Constants.Team.WHITE);
     }
     
     
@@ -96,7 +83,7 @@ public class BM : MonoBehaviour
             for(int x = 0; x < 6; x++)
             {
                 GameObject tile;
-                tile = Instantiate(boardTile, new Vector3(tileSize * x, 0, tileSize * y), Quaternion.identity);
+                tile = Instantiate(boardTile, new Vector3(tileSize * x, 0.25f, tileSize * y), Quaternion.identity);
 
                 board[x ,y] = tile.GetComponent<BoardTile>();
                 board[x ,y].SetTile(x, y, isBlack);
@@ -110,22 +97,7 @@ public class BM : MonoBehaviour
             isBlack = isBlack ? false : true;
         }
     }
-    
-    // Load Deck Data
-    // private int[] deckData = new int[5];
 
-    // void LoadDeckData(Constants.Team team)
-    // {
-    //     for(int i = 0; i < deckData.Length; ++i)
-    //     {
-    //         string key = ((int)team).ToString() + "_" + i.ToString();
-    //         if(PlayerPrefs.HasKey(key))
-    //         {
-    //             deckData[i] = PlayerPrefs.GetInt(key);
-    //             Debug.Log("Load Deck Data : " + key + " : " + deckData[i]);
-    //         }
-    //     }
-    // }
 
     // Set Deck Hand
     private void SetHand()
@@ -137,6 +109,7 @@ public class BM : MonoBehaviour
 
 
     // Handling Raycast interaction
+
     private void Update()
     {
         if (Input.GetMouseButtonUp(0))
@@ -157,32 +130,98 @@ public class BM : MonoBehaviour
                     case GamePhase.Play:
                         InteractionPlay(hit);
                         break;
+
+                    case GamePhase.End:
+                        break;
                 }
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("Play");
         }
     }
 
 
     // Deploy Phase
+    // -------------------------------------------------------
     // #1 Select Card > Touch Tile || Select Deployed Piece > Touch Tile (Pass Second UX now)
     // #2 Confirm Button
     // #3 Opposite Turn
     // #4 When both player ready > Enter the Play phase
 
-    private void DeployPiece()
-    {
-        // Deploy Piece
-        // And Delete Card on hand
-    }
-
-    public void EndDeploy() // UI Manager 에서 호출
-    { 
-        _currentPhase = GamePhase.Play;
-    }
-
     private void CheckDelpoymentProgress()
     {
         // Check Progress and if deploy ends, turn next phase
+        if(cardGroup.cardSet.Count == 0)
+        {
+            switch (currentTeamTurn)
+            {
+                case Constants.Team.WHITE :
+                    //currentTeamTurn = Constants.Team.BLACK;
+                    ChangeTurn();
+                    SetHand();
+                    ClearDeployArea();
+                    PrintDeployArea(Constants.Team.BLACK);
+
+                    break;
+
+                case Constants.Team.BLACK :
+                    //currentTeamTurn = Constants.Team.WHITE;
+                    EndDeploy();
+                    ChangeTurn();
+                    ClearDeployArea();
+
+                    break;
+            }
+        }
+    }
+
+    void PrintDeployArea(Constants.Team team)
+    {
+        switch(team)
+        {
+            case Constants.Team.WHITE :
+                // y : Column (A,B,C...) / x : Row (1,2,3...)
+                for(int y = 0; y < 2; y++)
+                {
+                    for(int x = 0; x < 6; x++)
+                    {
+                        board[x ,y].Moveable();
+                    }
+                }
+                break;
+
+            case Constants.Team.BLACK :
+                for(int y = 4; y < 6; y++)
+                {
+                    for(int x = 0; x < 6; x++)
+                    {
+                        board[x ,y].Moveable();
+                    }
+                }
+                break;
+        }
+
+        
+    }
+
+    void ClearDeployArea()
+    {
+        for(int y = 0; y < 6; y++)
+        {
+            for(int x = 0; x < 6; x++)
+            {
+                board[x ,y].SetTileOriginColor();
+            }
+        }
+    }
+
+    public void EndDeploy()
+    { 
+        _currentPhase = GamePhase.Play;
+
     }
 
 
@@ -191,16 +230,50 @@ public class BM : MonoBehaviour
     {
         if (isCardSelected && hit.transform.gameObject.TryGetComponent<BoardTile>(out BoardTile tile))
         {
+            if (tile.isPieceOnTile)
+            {
+                return;
+            }
+
+            DeployPiece(hit.transform.gameObject.GetComponent<BoardTile>());
 
             isCardSelected = false;
-
             CheckDelpoymentProgress();
         }
     }
 
+    private GameObject selectedCard;
+
+    public void CardSelected(Card_Play card)
+    {
+        selectedCardType = card.type;
+        isCardSelected = true;
+
+        selectedCard = card.gameObject;
+
+        foreach(Card_Play cardObj in cardGroup.cardSet)
+        {
+            cardObj.CardUnSelectedAnim();
+        }
+
+        selectedCard.GetComponent<Card_Play>().CardSelectedAnim();
+    }
+
+    private void DeployPiece(BoardTile tile)
+    {
+        GameObject[] team = currentTeamTurn == Constants.Team.WHITE ? chessPieceWhite : chessPieceBlack;
+
+        GameObject piece = Instantiate(team[(int)selectedCardType]);
+        piece.GetComponent<ChessPiece>().Set(tile);
+        
+        // And Delete Card on hand
+        cardGroup.cardSet.Remove(selectedCard.GetComponent<Card_Play>());
+        Destroy(selectedCard);
+    }
 
 
     // Play Phase
+    // -------------------------------------------------------
     private void ChangeTurn()
     {
         currentTeamTurn = currentTeamTurn == Constants.Team.WHITE ? Constants.Team.BLACK : Constants.Team.WHITE;
@@ -224,7 +297,11 @@ public class BM : MonoBehaviour
             {
                 if (isPieceSelected)
                 {
-                    ClearMoveableArea();
+                    if(piece != selectedPiece)
+                    {
+                        ClearMoveableArea();
+                        selectedPiece.PieceUnSelectedAnim();
+                    }
                 }
 
                 isPieceSelected = true;
@@ -239,6 +316,7 @@ public class BM : MonoBehaviour
                 Debug.Log("Piece Moved to Piece " + piece.gameObject.name);
 
                 selectedPiece.Move(piece.currentTile);
+                selectedPiece.PieceUnSelectedAnim();
                 isPieceSelected = false;
                 ClearMoveableArea();
 
@@ -254,6 +332,7 @@ public class BM : MonoBehaviour
                 if (moveableArea.Contains(selectedTile))
                 {
                     selectedPiece.Move(selectedTile);
+                    selectedPiece.PieceUnSelectedAnim();
                     isPieceSelected = false;
                     ClearMoveableArea();
 
@@ -265,8 +344,19 @@ public class BM : MonoBehaviour
         }
     }
 
+    public void EndGame()
+    {
+        // End Game
+        _currentPhase = GamePhase.End;
+        Debug.Log("<Game End> : " + currentTeamTurn.ToString());
 
-    // Checking Space
+        // Call UI : Win
+        UIManager.uiManager.PrintWin(currentTeamTurn);
+    }
+
+
+    // Check Movable Space
+    // -------------------------------------------------------
     private List<BoardTile> _moveableArea = new List<BoardTile>();
     public List<BoardTile> moveableArea { get { return _moveableArea; } } // get 으로 가져온 List 에 Add() 가능? - 가능
 

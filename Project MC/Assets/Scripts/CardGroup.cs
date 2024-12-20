@@ -11,6 +11,10 @@ public class CardGroup : MonoBehaviour
 
     [SerializeField] private GameObject Card;
 
+    private void Start()
+    {
+
+    }
 
     public void LoadDeckDataToCardSet()
     {

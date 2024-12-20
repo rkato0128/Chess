@@ -15,7 +15,11 @@ public class BoardTile : MonoBehaviour
     [SerializeField] private Color32 tileColBlack;
     [SerializeField] private Color32 tileColWhite;
     
+
+    // For moveable notice test
+    private Color32 originColor;
     
+
     public bool isPieceOnTile
     {
         get
@@ -26,17 +30,12 @@ public class BoardTile : MonoBehaviour
 
     public void Moveable()
     {
-        // For moveable notice test
-        tempColor = tileMesh.material.color;
-        tileMesh.material.color = Color.red;
+        tileMesh.material.color = (originColor * Color.red) * 0.3f + (originColor + Color.red) * 0.7f;
     }
-
-    // For moveable notice test
-    private Color32 tempColor;
 
     public void SetTileOriginColor()
     {
-        tileMesh.material.color = tempColor;
+        tileMesh.material.color = originColor;
     }
 
 
@@ -46,6 +45,7 @@ public class BoardTile : MonoBehaviour
         _coordinate.x = x;
         _coordinate.y = y;
 
-        tileMesh.material.color = isBlack ? tileColBlack : tileColWhite;
+        originColor = isBlack ? tileColBlack : tileColWhite;
+        tileMesh.material.color = originColor;
     }
 }

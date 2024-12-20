@@ -41,6 +41,7 @@ public class DeckBuildingManager : MonoBehaviour
     [SerializeField] private Button buttonSaveDeck;
     [SerializeField] private GameObject whiteTurnObj;
     [SerializeField] private GameObject blackTurnObj;
+    [SerializeField] private Card[] CardList;
 
     [SerializeField] private float deckMaxCost = 10;
     private float currentCost = 0;
@@ -89,7 +90,7 @@ public class DeckBuildingManager : MonoBehaviour
     // Update Cost Text
     private void UpdateCostText()
     {
-        currentCostText.text = currentCost + " / " + deckMaxCost;
+        currentCostText.text = currentCost.ToString();
     }
 
 
@@ -122,6 +123,12 @@ public class DeckBuildingManager : MonoBehaviour
             blackTurnObj.SetActive(true);
 
             isCompleteBuilding = true;
+            
+            //SetData
+            foreach(Card card in CardList)
+            {
+                card.SetData(Constants.Team.BLACK);
+            }
         }
         else
         {

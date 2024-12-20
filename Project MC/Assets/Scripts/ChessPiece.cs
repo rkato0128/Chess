@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using DG.Tweening;
 
 public class ChessPiece : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class ChessPiece : MonoBehaviour
         currentTile.pieceOnTile = null;
 
         targetTile.pieceOnTile = this;
-        this.gameObject.transform.localPosition = new Vector3(targetTile.transform.localPosition.x, 0.5f, targetTile.transform.localPosition.z);
+        this.gameObject.transform.localPosition = new Vector3(targetTile.transform.localPosition.x, 1.25f, targetTile.transform.localPosition.z);
 
         currentTile = targetTile;
     }
@@ -56,6 +57,7 @@ public class ChessPiece : MonoBehaviour
         if (type == Constants.PieceType.KING)
         {
             // End Game
+            BM.boardManager.EndGame();
         }
 
         Destroy(this.gameObject);
@@ -125,5 +127,15 @@ public class ChessPiece : MonoBehaviour
     public void Check()
     { 
 
+    }
+
+    public void PieceSelectedAnim()
+    {
+        this.gameObject.GetComponent<Transform>().DOLocalMoveY(1.25f, 0.2f);
+    }
+
+    public void PieceUnSelectedAnim()
+    {
+        this.gameObject.GetComponent<Transform>().DOLocalMoveY(0.5f, 0.25f).SetDelay(0.1f);
     }
 }

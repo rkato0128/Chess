@@ -17,5 +17,7 @@ public class Piece_King : ChessPiece
         CheckGeneralPath(currentTile.coordinate, Direction.POSITIVE, Direction.POSITIVE);
         CheckGeneralPath(currentTile.coordinate, Direction.NEGATIVE, Direction.NEGATIVE);
         CheckGeneralPath(currentTile.coordinate, Direction.POSITIVE, Direction.NEGATIVE);
+
+        PieceSelectedAnim();
     }
 }

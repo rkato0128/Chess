@@ -42,5 +42,7 @@ public class Piece_Pawn : ChessPiece
         {
             CheckGeneralPath(currentTile.coordinate, Direction.ZERO, movingDir, 1, true);
         }
+
+        PieceSelectedAnim();
     }
 }

@@ -17,5 +17,7 @@ public class Piece_Queen : ChessPiece
         CheckGeneralPath(currentTile.coordinate, Direction.POSITIVE, Direction.POSITIVE, BM.boardManager.size.x);
         CheckGeneralPath(currentTile.coordinate, Direction.NEGATIVE, Direction.NEGATIVE, BM.boardManager.size.y);
         CheckGeneralPath(currentTile.coordinate, Direction.POSITIVE, Direction.NEGATIVE, BM.boardManager.size.y);
+
+        PieceSelectedAnim();
     }
 }
