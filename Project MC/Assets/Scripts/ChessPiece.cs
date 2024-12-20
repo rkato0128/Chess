@@ -131,11 +131,11 @@ public class ChessPiece : MonoBehaviour
 
     public void PieceSelectedAnim()
     {
-        this.gameObject.GetComponent<Transform>().DOLocalMoveY(1.25f, 0.2f);
+        this.gameObject.GetComponent<Transform>().DOLocalMoveY(1f, 0.2f);
     }
 
     public void PieceUnSelectedAnim()
     {
-        this.gameObject.GetComponent<Transform>().DOLocalMoveY(0.5f, 0.25f).SetDelay(0.1f);
+        this.gameObject.GetComponent<Transform>().DOLocalMoveY(0.5f, 0.2f).SetDelay(0.075f);
     }
 }
